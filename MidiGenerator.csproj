@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="claudeV1.mid" />
+    <None Remove="claudeV10.mid" />
+    <None Remove="claudeV11.mid" />
+    <None Remove="claudeV12.mid" />
+    <None Remove="claudeV13.mid" />
+    <None Remove="claudeV14.mid" />
+    <None Remove="claudeV15.mid" />
+    <None Remove="claudeV16.mid" />
+    <None Remove="claudeV17.mid" />
+    <None Remove="claudeV18.mid" />
+    <None Remove="claudeV19.mid" />
+    <None Remove="claudeV2.mid" />
+    <None Remove="claudeV3.mid" />
+    <None Remove="claudeV4.mid" />
+    <None Remove="claudeV5.mid" />
+    <None Remove="claudeV6.mid" />
+    <None Remove="claudeV7.mid" />
+    <None Remove="claudeV8.mid" />
+    <None Remove="claudeV9.mid" />
+  </ItemGroup>
+
+</Project>
