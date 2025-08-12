@@ -28,7 +28,6 @@ namespace MidiGenerator.Genres
         
         public RockMidiGenerator()
         {
-            Console.WriteLine("ROCK GENERATOR CONSTRUCTOR CALLED!");
             // Create a unique Random instance with a different seed
             // Use both random number and counter to ensure uniqueness
             int uniqueSeed = _staticRandom.Next() + (++_instanceCounter * 1000) + Environment.TickCount;
@@ -37,8 +36,6 @@ namespace MidiGenerator.Genres
             // Random rock subgenre
             _subgenre = _random.Next(0, 5);
             
-            // Debug output - remove this later
-            Console.WriteLine($"Rock Generator #{_instanceCounter}: Seed={uniqueSeed}, Subgenre={_subgenre}");
             
             // Random rock keys (guitar-friendly)
             var rockKeys = new[] { 0, 2, 4, 5, 7, 9, 10 }; // C, D, E, F, G, A, Bb
