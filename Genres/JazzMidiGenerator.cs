@@ -10,11 +10,14 @@ namespace MidiGenerator.Genres
         public override string GenreName => "Jazz";
         protected override int BeatsPerMinute => 140;
         
-        private Random _random = new Random();
+        private static Random _staticRandom = new Random();
+        private Random _random;
         private int _saxProgram;
         
         public JazzMidiGenerator()
         {
+            _random = new Random(_staticRandom.Next());
+            
             var windOptions = new[] { 66, 67, 68, 70 }; // Tenor Sax, Baritone Sax, English Horn, Bassoon
             _saxProgram = windOptions[_random.Next(windOptions.Length)];
         }

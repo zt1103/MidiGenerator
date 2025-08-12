@@ -15,8 +15,9 @@ namespace MidiGenerator
             Console.WriteLine("=== MIDI Generator ===");
             Console.WriteLine("Procedural music generator for multiple genres\n");
 
-            // Discover all available generators
-            var generators = DiscoverGenerators();
+            // Discover all available generator types
+            var generatorTypes = DiscoverGeneratorTypes();
+            var generators = DiscoverGenerators(); // For menu display only
             
             if (!generators.Any())
             {
@@ -36,8 +37,8 @@ namespace MidiGenerator
                 Console.WriteLine("0. Exit");
 
                 // Get user selection
-                IMidiGenerator selectedGenerator = null;
-                while (selectedGenerator == null)
+                Type selectedGeneratorType = null;
+                while (selectedGeneratorType == null)
                 {
                     Console.Write($"\nSelect a genre (0-{generators.Count}): ");
                     var input = Console.ReadLine();
@@ -51,7 +52,7 @@ namespace MidiGenerator
                         }
                         else if (selection >= 1 && selection <= generators.Count)
                         {
-                            selectedGenerator = generators[selection - 1];
+                            selectedGeneratorType = generatorTypes[selection - 1];
                         }
                         else
                         {
@@ -87,7 +88,8 @@ namespace MidiGenerator
                 }
 
                 // Generate files
-                Console.WriteLine($"\nGenerating {fileCount} {selectedGenerator.GenreName} file(s) ({duration} seconds each)...");
+                var genreName = ((IMidiGenerator)Activator.CreateInstance(selectedGeneratorType)).GenreName;
+                Console.WriteLine($"\nGenerating {fileCount} {genreName} file(s) ({duration} seconds each)...");
                 
                 var generatedFiles = new List<string>();
                 
@@ -95,8 +97,11 @@ namespace MidiGenerator
                 {
                     try
                     {
-                        string fileName = CreateFileName(selectedGenerator.GenreName, i + 1, fileCount);
-                        string filePath = selectedGenerator.CreateMidiFile(duration, fileName);
+                        // Create a fresh instance for each file to ensure different randomization
+                        var generator = (IMidiGenerator)Activator.CreateInstance(selectedGeneratorType);
+                        
+                        string fileName = CreateFileName(generator.GenreName, i + 1, fileCount);
+                        string filePath = generator.CreateMidiFile(duration, fileName);
                         generatedFiles.Add(filePath);
                         
                         if (fileCount > 1)
@@ -120,7 +125,7 @@ namespace MidiGenerator
                     }
                     Console.WriteLine($"\nLocation: {Path.GetDirectoryName(generatedFiles[0])}");
                     Console.WriteLine($"Duration: {duration} seconds each");
-                    Console.WriteLine($"Genre: {selectedGenerator.GenreName}");
+                    Console.WriteLine($"Genre: {genreName}");
                 }
                 else
                 {
@@ -135,17 +140,34 @@ namespace MidiGenerator
             }
         }
 
+        private static List<Type> DiscoverGeneratorTypes()
+        {
+            var generatorTypes = new List<Type>();
+            
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var types = assembly.GetTypes()
+                    .Where(t => t.IsClass && !t.IsAbstract && typeof(IMidiGenerator).IsAssignableFrom(t))
+                    .OrderBy(t => t.Name);
+
+                generatorTypes.AddRange(types);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error discovering generator types: {ex.Message}");
+            }
+
+            return generatorTypes;
+        }
+        
         private static List<IMidiGenerator> DiscoverGenerators()
         {
             var generators = new List<IMidiGenerator>();
             
             try
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var generatorTypes = assembly.GetTypes()
-                    .Where(t => t.IsClass && !t.IsAbstract && typeof(IMidiGenerator).IsAssignableFrom(t))
-                    .OrderBy(t => t.Name);
-
+                var generatorTypes = DiscoverGeneratorTypes();
                 foreach (var type in generatorTypes)
                 {
                     var generator = (IMidiGenerator)Activator.CreateInstance(type);

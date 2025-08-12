@@ -8,7 +8,8 @@ public class ReggaeMidiGenerator : BaseMidiGenerator
 {
     public override string GenreName => "Reggae";
     
-    private Random _random = new Random();
+    private static Random _staticRandom = new Random();
+    private Random _random;
     private int _rootKey;
     private int _tempoVariation;
     private int _leadInstrument;
@@ -21,6 +22,8 @@ public class ReggaeMidiGenerator : BaseMidiGenerator
     
     public ReggaeMidiGenerator()
     {
+        _random = new Random(_staticRandom.Next());
+        
         // Random reggae keys (often minor or modal)
         var reggaeKeys = new[] { 0, 2, 3, 5, 7, 8, 10 }; // C, D, Eb, F, G, Ab, Bb
         _rootKey = reggaeKeys[_random.Next(reggaeKeys.Length)];
