@@ -1,6 +1,9 @@
 # MIDI Generator Project
 
-A C# framework for generating procedural MIDI files in different musical genres using LinqPad.
+A 100% Claude coded (human guided) C# framework for generating procedural MIDI files in different musical genres.
+Does not make particularly good music, but it is vaguely music, as interpreted by Claude. 
+Feel free to riff on the project and/or use your generated files for any purpose whatsoever.
+Usage: Open the solution in Visual Studio and run. If you'd like to add a genre, Implement IMidiGenerator and it will automatically add your genre to the list for selection. (see below for more details)
 
 ## Project Structure
 
@@ -24,7 +27,6 @@ All generators must implement:
 
 ### Base Class Responsibilities (`BaseMidiGenerator`)
 Handles all MIDI format complexity:
-- File naming with auto-incrementing version numbers (`claudeV1.mid`, `claudeV2.mid`, etc.)
 - MIDI header construction (format, tracks, timing)
 - Track data compilation and delta-time calculation
 - Variable-length quantity encoding
@@ -69,11 +71,10 @@ Handles all MIDI format complexity:
 ### Adding New Genres
 
 1. Create new class inheriting from `BaseMidiGenerator`
-2. Include `#load ".\*.cs"` at the top for LinqPad
-3. Implement required properties and methods
-4. Follow musical conventions for the genre
-5. Use appropriate tempo (`BeatsPerMinute`)
-6. Select suitable GM instruments for `AddProgramChange()`
+2. Implement required properties and methods
+3. Follow musical conventions for the genre
+4. Use appropriate tempo (`BeatsPerMinute`)
+5. Select suitable GM instruments for `AddProgramChange()`
 
 ### Code Style Rules
 
@@ -118,4 +119,3 @@ For non-deterministic genres (like Jazz):
 - Group related functionality (all drum methods together)
 - Include comments for complex musical concepts
 
-Generated MIDI files are saved to `C:\Users\Zach\Documents\Claude\music\`
