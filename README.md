@@ -1,8 +1,11 @@
 # MIDI Generator Project
 
 A 100% Claude coded (human guided) C# framework for generating procedural MIDI files in different musical genres.
+
 Does not make particularly good music, but it is vaguely music, as interpreted by Claude. 
+
 Feel free to riff on the project and/or use your generated files for any purpose whatsoever.
+
 Usage: Open the solution in Visual Studio and run. If you'd like to add a genre, Implement IMidiGenerator and it will automatically add your genre to the list for selection. (see below for more details)
 
 ## Project Structure
