@@ -39,7 +39,8 @@ namespace MidiGenerator.Genres
                 for (int bar = section.StartBar; bar < section.StartBar + section.LengthBars; bar++)
                 {
                     int barStart = bar * ticksPerBar;
-                    var chord = chordProgression[bar];
+                    // Ensure we don't exceed the chord progression length
+                    var chord = chordProgression[bar % chordProgression.Length];
                     
                     AddSectionBasedMusic(events, barStart, chord, section, bar - section.StartBar);
                 }
@@ -147,13 +148,15 @@ namespace MidiGenerator.Genres
             
             var chords = new List<JazzChord>();
             
-            for (int bar = 0; bar < totalBars; bar += 4)
+            // Generate enough chords to fill all bars
+            while (chords.Count < totalBars)
             {
                 var progression = progressions[_random.Next(progressions.Length)];
                 foreach (var chordName in progression)
                 {
-                    if (chords.Count < totalBars)
-                        chords.Add(ParseChord(chordName));
+                    chords.Add(ParseChord(chordName));
+                    if (chords.Count >= totalBars)
+                        break;
                 }
             }
             
